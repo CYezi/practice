@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueTest</title>
+    <style>
+        .tab-button{
+            padding: 6px 10px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            background: #f0f0f0;
+            margin-bottom: -1px;
+            margin-right: -1px;
+        }
+        .tab-button.active{
+            background: #e0e0e0;
+        }
+        .tab-button:hover{
+            background: #e0e0e0;
+        }
+        .tab {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .slide-fade-enter-active {
+            transition: all .3s ease;
+        }
+        .slide-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+        .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active for below version 2.1.8 */ {
+            transform: translateX(10px);
+            opacity: 0;
+        }
+        .component-fade-enter-active, .component-fade-leave-active {
+            transition: .3s ease;
+        }
+        .component-fade-enter, .component-fade-leave-to
+        /* .component-fade-leave-active for below version 2.1.8 */ {
+            opacity: 0;
+        }
+        
+    </style>
+</head>
+<body>
+    <a href="#app-12">app-12</a>
+    <div id="app-1">
+        <input v-model="message" placeholder="edit me" v-focus>
+        <p>Message is: {{ message }}</p>
+        <span>Multiline message is:</span>
+        <p style="white-space: pre-line;">{{ message1 }}</p>
+        <br>
+        <textarea v-model="message1" placeholder="add multiple lines"></textarea>
+    </div>
+    <div id="app-2">
+        <input type="checkbox" id="checkbox" value="value" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+    </div>
+    <div id="app-3">
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+    </div>
+    <div id="example-4">
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <input type="radio" id="three" value="Three" v-model="picked">
+        <label for="three">Three</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+      </div>
+    <div id="app-5">
+        <select v-model="selected">
+            <option disabled value="">请选择</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>Selected: {{ selected }}</span>
+    </div>
+    <div id="example-6">
+        <input type="checkbox" id="A" value="A" v-model="selected">
+        <label for="A">A</label>
+        <input type="checkbox" id="B" value="B" v-model="selected">
+        <label for="B">B</label>
+        <input type="checkbox" id="C" value="C" v-model="selected">
+        <label for="C">C</label>
+        <br>
+        <span>Selected: {{ selected }}</span>
+      </div>
+    <div id="app-7" >
+        <span v-for="(item, index) in items" :key="index">
+            <input type="checkbox" :id="item" :value="item">
+            <label :for="item"> {{item}}</label>
+        </span>
+    </div>
+    <div id="app-8" >
+        <span v-for="(item, index) in items" :key="index">
+            <input type="checkbox" :id="item.message" :value="item.message" >
+            <label :for="item.message"> {{item.message}}</label>
+        </span>
+    </div>
+    <div id="app-9">
+        <vuebotton :add="add"></vuebotton>
+        <p>{{count}}</p>
+    </div>
+
+    <div id="app-10" >
+        <mulselect v-for="(item, index) in items" :item="item" :change="change" :selected="selected" :key="index" v-on:change="change"></mulselect>
+    </div>
+    
+    <div id="app-11">
+        <mul-select v-for="(item, index) in items" :item="item" :selected="selected" :key="index"></mul-select>
+        <button v-on:click="change">change</button>    
+        <p>{{selected}}</p>
+    </div>
+
+    <div id="blog-posts-events-demo">
+        <div :style="{ fontSize: postFontSize + 'em' }">
+          <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+            v-on:enlarge-text="enlarge"
+          ></blog-post>
+        </div>
+    </div>     
+    <div id="app1">
+        <child-component></child-component>
+    </div>
+    <div id="app-12"></div>
+    <div id="app-13">
+        <base-input
+            :label="label"
+            :value="value"
+            ></base-input>
+            <!-- <p>{{username}}</p> -->
+        
+    </div>
+    <div id="app">
+        A{{msg}}
+        <component-b :msg="msg"></component-b>
+    </div>
+    <div id="app-14">
+        <my-component v-on:fun="outClick"></my-component>    
+    </div>
+    <div>
+        <hello></hello>
+    </div>
+    <div id="dynamic">
+        <button 
+        v-for="(tab, index) in tabs" 
+        v-bind:key="index"
+        v-bind:class=" [ 'tab-button' ,{active: currentTab===tab } ] "
+        v-on:click="currentTab=tab"
+        >
+        {{tab}}
+    </button>
+    <keep-alive>
+        <component v-bind:is="currentTabComponent" class="tab"></component>
+    </keep-alive>
+    </div>
+
+    <div id="dynamic-component-demo" class="demo">
+        <button
+          v-for="tab in tabs"
+          v-bind:key="tab"
+          v-bind:class="['tab-button', { active: currentTab === tab }]"
+          v-on:click="currentTab = tab"
+        >
+          {{ tab }}
+        </button>
+  
+        <component v-bind:is="currentTabComponent" class="tab" ></component>
+      </div>
+    <div id="example-1">
+        <button @click="display">
+            Toggle render
+        </button>
+        <transition name="slide-fade">
+            <p v-if="show">hello</p>
+        </transition>
+    </div>
+    <div id="transition-components-demo">
+        <input type="radio" id="com-a" value="v-a" v-model="view">
+        <label for="com-a">component A</label>
+        <input type="radio" id="com-b" value="v-b" v-model="view">
+        <label for="com-b">component B</label>
+        <transition name="component-fade" mode="out-in">
+            <component v-bind:is="view"></component>
+        </transition>
+    </div>
+    <div id="app-15">
+        <anchored-heading :level="1">test</anchored-heading>
+    </div>
+    <div id="app-16">
+        　　<p>{{message}}</p> <!-- 输出：<span>通过双括号绑定</span> -->
+        　　<p v-html="html"></p> <!-- 输出：html标签在渲染的时候被解析 -->
+        　　<p v-text="text"></p> <!-- 输出：<span>html标签在渲染的时候被源码输出</span> -->
+        </div>
+    
+    <div id="app-17">
+        <textarea  cols="30" rows="10" v-model="input" >
+            {{input}}
+        </textarea>
+        <p >{{result}}</p>
+    </div>
+
+</body>
+<script src="vue.js"></script>
+<script src="vueTest.js"></script>  
+
+</html>

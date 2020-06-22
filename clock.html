@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Test</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+</head>
+<style>
+    .clock{
+        color: white;
+        background-color: #595756;
+        width: 600px;
+        height: 600px;
+        transform: translateX(200px);
+    }
+    .hour{
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background-color: black;
+        margin: 25%;
+        border-radius: 1500px;
+        z-index: 3;
+    }
+    .minute{
+        color: black;
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background-color: white;
+        margin: 100px;
+        border-radius: 1700px;
+        z-index: 2;
+    }
+    .second{
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background-color:black;
+        text-align:center;
+        margin: 50px;
+        border-radius: 250px;
+        z-index: 1;
+    }
+    .secondCalibration{
+        position: absolute;
+        text-align:center;
+        width: 20px;
+        height: 20px;
+        top: 240px;
+        left: 240px;
+    }
+    .minuteCalibration{
+        position: absolute;
+        text-align:center;
+        width: 20px;
+        height: 20px;
+        top: 190px;
+        left: 190px;
+    }
+    .hourCalibration{
+        position: absolute;
+        text-align:center;
+        width: 20px;
+        height: 20px;
+        top: 140px;
+        left: 140px;
+    }
+</style>
+<body>
+    <div class="clock">
+        <div class="second">
+        </div>
+        <div class="minute"></div>
+        <div class="hour"></div>
+    </div>
+    
+</body>
+<script>
+    function PrefixInteger(num, length) {
+        return (num/Math.pow(10,length)).toFixed(length).substr(2);
+    }
+    for(let i=0;i<360;i+=6){
+        let j=PrefixInteger(i/6,2)
+        $('.second').append(`<span class='secondCalibration' style='transform: rotate(${i}deg) translate(230px)'>${j}</span>`)
+        $('.minute').append(`<span class='minuteCalibration' style='transform: rotate(${i}deg) translate(180px)'>${j}</span>`)
+    }
+    for(let i=30;i<=360;i+=30){
+        let j=PrefixInteger(i/30,2)
+        $('.hour').append(`<span class='hourCalibration' style='transform: rotate(${i-30}deg) translate(130px)'>${j}</span>`)
+    }
+    var date=new Date();
+    var secondDeg=date.getSeconds()*6,minuteDeg=date.getMinutes()*6,hourDeg=(date.getHours()-1)*30;
+    $('.hour').css('transform',`rotate(-${hourDeg}deg)`);
+    $('.minute').css('transform',`rotate(-${minuteDeg}deg)`);
+    for(i of $('.secondCalibration')){
+        if(i.style.transform==`rotate(${secondDeg}deg) translate(230px)`){
+            i.style.color='cyan';
+        }
+        else{
+            i.style.color='white';
+        }
+    }
+    for(i of $('.minuteCalibration')){
+        if(i.style.transform==`rotate(${minuteDeg}deg) translate(180px)`){
+            i.style.color='blue';
+        }
+        else{
+            i.style.color='black';
+        }
+    }
+    for(i of $('.hourCalibration')){
+        if(i.style.transform==`rotate(${hourDeg}deg) translate(130px)`){
+            i.style.color='cyan';
+        }
+        else{
+            i.style.color='white';
+        }
+    }
+    setInterval(function(){
+        secondDeg=secondDeg%360;
+        secondDeg+=6;
+        
+        $('.second').css('transform',`rotate(-${secondDeg}deg)`)
+        for(i of $('.secondCalibration')){
+            if(i.style.transform==`rotate(${secondDeg}deg) translate(230px)`){
+                i.style.color='cyan';
+            }
+            else{
+                i.style.color='white';
+            }
+        }
+        minuteDeg=minuteDeg%360;
+        if(secondDeg==360){
+            minuteDeg+=6;
+            $('.minute').css('transform',`rotate(-${minuteDeg}deg)`)
+            for(i of $('.minuteCalibration')){
+                if(i.style.transform==`rotate(${minuteDeg}deg) translate(180px)`){
+                    i.style.color='blue';
+                }
+                else{
+                    i.style.color='black';
+                }
+            }
+        }
+        hourDeg=hourDeg%360
+        if(minuteDeg==360){
+            hourDeg+=30;
+            $('.hour').css('transform',`rotate(-${hourDeg}deg)`)
+            for(i of $('.hourCalibration')){
+            if(i.style.transform==`rotate(${hourDeg}deg) translate(130px)`){
+                i.style.color='cyan';
+            }
+            else{
+                i.style.color='white';
+            }
+        }
+        }
+    },1000);
+</script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .ul-test>ul{
+            display: inline;
+        }
+        .ul-test>ul>li{
+            display: inline-block;
+            padding: 0em 1em;
+        }
+        .child{
+            position: fixed;
+        }
+        .child>ul{
+            display: none;
+            list-style: none;
+            position: relative;
+            right: 50%;
+            
+        }
+        .ul-test>ul>li:hover ul{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 300px;height: 300px;background-color: aqua;"></div>
+    <div class="ul-test">
+        <ul>
+            <li>one
+                <div class="child">
+                    <ul>
+                        <li>one-one</li>
+                        <li>one-two</li>
+                    </ul>
+                </div>
+            </li>
+            <li>two
+                <div class="child">
+                    <ul>
+                        <li>two-one</li>
+                        <li>two-two</li>
+                    </ul>
+                </div>
+            </li>
+            <li>three
+                <div class="child">
+                    <ul>
+                        <li>three-one</li>
+                        <li>three-two</li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    let {toString: s} = 123;
+    console.log(s.toString());
+    const [a, b, c, d, e] = 'hello';
+    console.log(a,b,c,d,e)
+    function calcTime() {
+        let year=new Date().getFullYear();
+        let startTime=new Date(`${year}-01-01 00:00:00`);
+        let endTime=new Date(`${year}-12-31 23:59:59`);
+        let allTime=endTime-startTime;
+        return allTime;
+    }
+    let year=new Date(`2020-01-01`).getFullYear();
+    
+    console.log(calcTime())
+    var x=1;
+    var obj={
+        x:2,
+        getGX:function(){
+            var x=5;
+            return function () {
+                return this.x;
+            }()
+        },
+        getX:function(){
+            var x=3;
+            console.log(this)
+            return this.x;
+        }
+    }
+    console.log(obj.getX())
+    console.log(obj.getGX())
+</script>
+</html>

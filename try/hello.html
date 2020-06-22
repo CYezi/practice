@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>hello</p>
+</body>
+<script>
+    add=function(){
+        var x=0
+        return add2=function(){
+            return x+=2
+        }
+    }()
+    {
+        let n=0;
+        fn=function(){return n+=2}
+    }
+    console.log(add2())
+    console.log(add2())
+    console.log(fn())
+    console.log(fn())
+    a={};
+    b=a;
+    console.log(a===b)
+</script>
+</html>

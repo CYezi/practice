@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkDown Editor</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
+    <!-- <script src="https://unpkg.com/lodash@4.16.0"></script> -->
+    <link rel="stylesheet" href="editorCSS.css">
+</head>
+<body>
+    <div id="editor">
+        <textarea v-model="input">{{input}}</textarea>
+        <div v-html="MarkDown"></div>
+    </div>
+</body>
+<script>
+    Vue.directive('focus', {
+        // 当被绑定的元素插入到 DOM 中时……
+        inserted: function (el) {
+        // 聚焦元素
+        el.focus()
+        }
+    })
+    new Vue({
+        el:"#editor",
+        data() {
+            return {
+                input:""
+            }
+        },
+        computed: {
+            MarkDown:function(){
+                return marked(this.input)
+            }
+        },
+        // methods: {
+        //     update:_.debounce(function(e) {
+        //     this.input = e.target.value;
+        //   }, 300)
+        // },
+    })
+    
+</script>
+</html>

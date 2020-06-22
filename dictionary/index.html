@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dictionary</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
+    <script src="https://unpkg.com/jquery@3.5.1"></script>
+    <style>
+        .search{
+            width: 600px;
+            box-sizing: border-box;
+            margin: auto;
+            margin-bottom: 1em;
+            margin-top: 1em;
+        }
+        input{
+            width: 500px;
+            height: 30px;
+            font-size: large;
+        }
+        button{
+            width: 70px;
+            height: 35px;
+            font-size: large;
+            color: white;
+            background-color: blue;
+            border: none;
+        }
+
+        .container{
+            position: relative;
+            box-sizing: border-box;
+            margin: auto;
+            width: 80%;
+        }
+        .container .container-one{
+            position: relative;
+            box-sizing: border-box;
+            margin: auto;
+            width: 80%;
+        }
+        .history{
+            position: relative;
+            box-sizing: border-box;
+            margin: auto;
+            width: 80%;
+        }
+        .box{
+            background-color: #f8f8f8;
+        }
+        .history-box{
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            background-color: #33313121;
+            margin: 1em;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="app" class="container">
+            <div class="search">
+                <input type="text" v-model="input" @keyup.enter="check">
+                <button @click="check"> 查询 </button>
+            </div>
+            <div class="history">{{historyList}}</div>
+            <div class="container-one" >
+                {{content}}
+            </div>
+            
+        </div>
+    </div>
+</body>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            input:"",
+            output:"",
+            show:false,
+            match:{
+                zi:"字型",
+                py:"拼音输入",
+                wubi:"五笔输入",
+                pinyin:"拼音",
+                bushou:"部首",
+                bihua:"笔画数",
+                jijie:"集解",
+                xiangjie:"详解"
+            },
+            history:[],
+        },
+        computed: {  
+            content:function(){
+                if(this.output){
+                    let $childContainer=$(`<div class="child-container"><div>`);                    
+                    Object.keys(this.output.result).forEach((key)=>{
+                        if(key in this.match){
+                            let $box=$(`<div class="box"><div>`);                    
+                            $box.append(`<h3>${this.match[key]}</h3>`);
+                            if(this.output.result[key] instanceof Array){
+                                Object.keys(this.output.result[key]).forEach((content)=>{
+                                    let result=this.output.result[key][content].slice(this.output.result[key][content].indexOf("〖"),this.output.result[key][content].indexOf("〗")+1)
+                                    this.output.result[key][content]=this.output.result[key][content].replace(result,"");
+                                    $box.append(`<p>${this.output.result[key][content]}</p>`);
+                                })
+                                $box.append(`<br>`);
+                            }
+                            else{
+                                $box.append(`<p>${this.output.result[key]}</p>`);
+                            }
+                            $childContainer.append($box);
+                        }
+                    })
+                    $('.container-one').fadeOut(400, function() {
+                        $('.container-one').html($childContainer.html()).fadeIn(200);
+                    });
+                }
+            },
+            historyList:function(){
+                    let $historyContainer=$(`<div> </div>`);
+                    console.log(this.history);
+                    this.history.forEach((e)=>{
+                        $historyContainer.append(`
+                            <div class="history-box" @click=checkHistory("${e}")>
+                                ${e}
+                            </div>
+                            `)
+                    })
+                    $(".history").html($historyContainer);
+            },
+        },
+        methods: {
+            callback:function (data){
+                this.output=data;
+            },
+            ajax:function (method,url,dataType,callback){
+                var result="";
+                $.ajax({
+                    url:url,
+                    type:method,
+                    async:true,
+                    dataType:dataType,
+                    success:function(data){
+                        result=data;
+                        callback(data);
+                        
+                    },
+                });
+            },
+            check:function(){
+                if(!(this.history.indexOf(this.input)!=-1))this.history.push(this.input);
+                this.ajax("GET",`http://v.juhe.cn/xhzd/query?word= ${encodeURI(this.input)} &dtype=&key=97ae4b96ca19dc2afdb4177a7d7f1b06`,"jsonp",this.callback);
+            },
+            checkHistory:function(e){
+                this.input=e;
+                this.check();
+            }
+        },
+    })
+    
+</script>
+</html>

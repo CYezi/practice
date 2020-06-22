@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* body{font-size: large;} */
+    nav a {
+      display: block;
+    }   
+    h1 em {color: gray;}
+    h1 > strong {color: red;}   
+    a:active {
+      color: orange;
+    }
+    a:focus {
+      color: green;
+    }
+    a:hover {
+      color: red;
+    }
+    a:link {
+      color: blue;
+    }
+    a:visited {
+      color: purple;
+    }
+    ul li ul li:nth-child(2n) {background-color: silver;}
+    p::before{content: "test";}
+    p em {
+      color: black !important;
+    } /* author's style sheet */
+    p em {
+      color: yellow !important;
+    } /* reader's style sheet */
+    .rollcall{
+      display: inline-block;
+    }
+    .rollcall li::after {
+      content: ">";
+    }
+    /* .rollcall li:last-child::after{
+      content: none;
+    } */
+    .main,.left,.right { float:left;  height:200px; }
+    .main { width:100%;  background:#ace; }
+    .left { width:20%; background:#eee; margin-left:-100%; } 
+    .right { width:30%; background:#ddd; margin-left:-30%; }  
+    li {
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+</style>
+<body>
+    <h1>This is <strong>very</strong> important.</h1>
+    <h1>This is <em>really <strong>very</strong></em> important.</h1>
+    <h1>Meerkat <em>Central</em></h1>
+    <p>
+      Welcome to Meerkat <em>Central</em>, the <strong>best meerkat web site on <a href="https://www.bilibili.com">the <em>entire</em> Internet</a></strong>!
+    </p> 
+    <ul>
+      <li>We offer: 
+        <ul>
+          <li><strong>Detailed information</strong> on how to adopt a meerkat</li> 
+          <li>Tips for living with a meerkat</li>
+          <li><em>Fun</em> things to do with a meerkat, including:
+            <ol>
+              <li>Playing fetch</li> 
+              <li>Digging for food</li> 
+              <li>Hide and seek</li>
+            </ol> 
+          </li>
+         </ul>
+      </li>
+      <li>...and so much more!</li>
+    </ul>
+    <p>Questions? <a href="mailto:suricate@meerkat.web">Contact us!</a> </p>
+    <div style="width: 200px; border:solid blue 5px ; margin-right:-20px ; height: 200px;box-sizing:content-box;float: left; ">
+      <div style="width:auto;height: 200px; margin-bottom:-20px; border:solid black 5px ; box-sizing:border-box; background-color: aqua;"></div>
+    </div>
+    <nav>
+      <a href="index.html">WidgetCo Home</a>
+      <a href="products.html">Products</a>
+      <a href="services.html">Services</a>
+      <a href="fun.html">Widgety Fun!</a>
+      <a href="support.html">Support</a>
+      <a href="about.html" id="current">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <ul class="rollcall">
+      <li class="rollcall">Bob C.</li>
+      <li class="rollcall">Marcio G.</li>
+      <li class="rollcall">Eric M.</li>
+      <li class="rollcall">Kat M.</li>
+      <li class="rollcall">Tristan N.</li>
+      <li class="rollcall">Arun R.</li>
+      <li class="rollcall">Doron R.</li>
+      <li class="rollcall">Susie W.</li>
+    </ul>
+    <div class="wrap">
+
+      <div class="main">main</div>
+      
+      <div class="left">left</div>
+      
+      <div class="right">right</div>
+      
+      </div>
+  </body> 
+  <script>
+    var divID=document.getElementsByTagName("div");
+    console.log(divID[0].style.width);
+    var liArr=document.querySelectorAll("li.rollcall");
+    console.log(liArr);
+    console.log(liArr[liArr.length-1]);
+    value=window.getComputedStyle(liArr[liArr.length-1],"::after").getPropertyValue("content");
+    console.log(value);
+    console.log(document.styleSheets[0].insertRule(".rollcall li:last-child::after{content: none;}"));
+  </script>
+</html>
